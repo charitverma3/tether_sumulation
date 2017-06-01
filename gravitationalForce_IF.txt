@@ -1,0 +1,31 @@
+%calculating gravitational force in Inertial Frame and torque in Body frame
+%calculating for the entire tether 
+%variable gravity assumed over tether
+
+%rotation matrix from BodyFrame(BF) to InertialFrame(IF) is A, inverse is Ai
+%rotation matrix from InertialFrame to EarthFixed(EF) is B, inverse is Bi
+
+
+
+posn_COM_IF     %same thing %see what one to keep         %in sync with mag_vector file
+
+Ms=    %mass of satellite????
+
+force_grav_sat_IF= -(G*M*Ms/norm(posn_vec_IF)^3)*posn_sat_IF                                         %COM assumed on the satellite body
+
+dm=rho*dL             %relation b/w dM and dL of tether????
+force_grav_tether_dL_BF= -G*M*dm*(posn_COM_BF+posn_dL_BF)/norm(posn_COM_BF + posn_dL_BF)^3           %refer to diagm for details of this equation 
+
+
+
+force_grav_tether_BF += force_grav_tether_dL_BF        %integration how????
+
+dTorq_grav_dL_tether_BF=cross(posn_dL_BF,force_grav_tether_dL_BF)
+Torq_grav_tether_BF += dTorq_grav_dL_tether_BF                 %integration for torque????
+
+
+
+force_grav_tether_BF=force_grav_tether_IF*Ai
+force_grav_sys_IF = force_grav_sat_IF + force_grav_tether_IF   %total force_gravity by tether and satellite
+
+Torq_grav_sys_BF=torque_grav_tether_BF                       %total torque only due to tether

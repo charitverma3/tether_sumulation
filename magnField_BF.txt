@@ -1,0 +1,56 @@
+%calc of magnetic field in EF and torque in Body Frame
+%rotation matrix from BodyFrame(BF) to InertialFrame(IF) is A, inverse is Ai
+%rotation matrix from InertialFrame to EarthFixed(EF) is B, inverse is Bi
+
+
+
+dL_vec_IF = L*dL_cap_BF*A   
+dL_vec_EF = dL_vec_IF*B       
+
+posn_COM_IF                                                %position of satellite in IF
+
+
+
+w_BF=w_IF*Ai                                ?????check               %converting angular velocty to BF  
+
+dL_cap_EF=dL_cap_BF*A*B                                   %tether vector in earth fixed frame from body frame
+
+dL_cap_BF=[0,-1,0]                                         %rigid tether in body frame
+
+
+/////    loop_1
+
+
+vel_dL_IF= (vel_COM_IF + cross(w_BF,posn_dL_BF)*A)          %kinematic equation for 3d rigid body rotation
+
+vel_COM_EF=vel_COM_IF*B                                    % centre of mass velocity in EF frame, needed here since vCom_IF is being calculated in real time(loop)
+
+
+
+vel_dL_EF = vel_dL_IF*Ai                                    %vel. of dL element in EF frame
+
+
+dF_mag_EF = ((area/length)*dot(dL_cap_EF, cross(vel_dL_EF,mag_vector_EF))*cross(dL_vec_EF,mag_vec_EF)
+
+
+F_mag_EF += dF_mag_EF                                           %integration ; can it be done by a solver????
+
+%calculation of magnetic force and torque in body frame
+%torque is calculated by finding force in BF first
+
+
+
+dF_mag_BF=dF_mag_EF*Bi*Ai                                        %magnetic force in BF from EF
+
+%above line for calculating torque in BF
+//////////loop_2
+
+dTorq_mag_BF=cross(posn_dL_BF,dF_mag_BF)                         %torque in body frame
+Torq_mag_BF += dTorq_mag_BF                                     %integration ; by a solver????
+
+/////////loop_2_ends 
+
+
+////loop_1_end
+
+

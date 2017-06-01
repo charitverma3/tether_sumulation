@@ -1,0 +1,16 @@
+%dynamic equations here
+% w_BF is defined as angular velocity of BF wrt to an inertial frame at the posn of BF with its axis aligned to BF
+
+F_total_IF = F_mag_IF + force_grav_sys_IF
+F_total_IF= (Ms+Mt)*acc_COM_IF           %COM is assumed at the satellite body
+
+Inertia_BF = [Ixx,-Ixy,-Ixz ; -Ixy, Iyy,-Iyz; -Ixz, -Iyz,Izz]
+
+Torq_total_BF = Torq_grav_sys_BF + Torq_mag_BF
+
+w_BF_dot=diff(w_BF)   % see how to diff wrt a variable   ?????
+w_rel_dot = dot(w_BF_dot*A,[1,0,0]) , dot(w_BF_dot*A,[0,1,0]), dot(w_BF_dot*A,[0,0,1])   ]       
+%differentiation of scalar part of omega in IF projected along BF
+
+
+Torq_total_BF = Inertia_BF*w_rel_dot  +  cross(w_BF, Inertia_BF*w_BF)      
