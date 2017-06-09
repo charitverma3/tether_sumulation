@@ -1,0 +1,54 @@
+%magnetic field and torque
+
+
+mag_field = igrfmagm(lat,long,height.....)   %gives magnetic field in NED frame at the center of tether
+
+%force
+
+ned->IF
+L_cap_IF=L_cap_BF*RM
+force_mag_tether_IF = ((area/length)*dot(L_cap_IF, cross(vel_COM_IF,mag_field_IF))*cross(L*L_cap_IF,mag_field_IF)     %no frame dependant quantity so transform later?? 
+
+%torque
+
+force_mag_tether_BF=force_mag_tether_IF*rm
+torq_mag_tether_BF= cross(L*dL_cap_BF/2,force_mag_tether_BF)
+
+
+
+%gravitational force and torque
+
+
+
+force_grav_sat_IF = -G*M*Ms/radius^2 
+force_grav_tether_IF= -G*M*Mt/radius^2      %MASS_TETHER ?????
+force_grav_sys_IF=force_grav_sat_IF+force_grav_tether_IF
+
+
+force_grav_tether_BF=force_grav_IF*rm
+
+torq_grav_BF = cross(L*dL_cap_BF/2,force_grav_tether_BF)
+
+
+
+
+%dynamic equations
+
+
+
+% w_BF is defined as angular velocity of BF wrt to an inertial frame at the posn of BF with its axis aligned to BF
+%diff_eqn_1
+force_mag_tether_IF + force_grav_sys_IF = (Ms+Mt)*acc_COM_IF                                             %COM is assumed at the satellite body
+
+inertia_BF = [Ixx,-Ixy,-Ixz ; -Ixy, Iyy,-Iyz; -Ixz, -Iyz,Izz]                                     %can initialize this with constants
+
+torq_total_BF = torq_grav_tether_BF + torq_mag_tether_BF
+
+w_BF_dot=diff(w_BF)
+                                                                               % see how to diff wrt a variable   ?????
+w_rel_dot = [ dot(w_BF_dot*A,[1,0,0]) ; dot(w_BF_dot*A,[0,1,0]) ; dot(w_BF_dot*A,[0,0,1])   ]        %differentiation of scalar part of omega in IF projected along BF
+
+%diff_Eqn_2
+torq_total_BF = inertia_BF*w_rel_dot  +  cross(w_BF, inertia_BF*w_BF)       % here w_rel_dot is same as w_dot
+
+

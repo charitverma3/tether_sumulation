@@ -1,0 +1,1 @@
+%calculates force(in IF) and torque(in BF) due to gravity

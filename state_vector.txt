@@ -1,0 +1,13 @@
+% state= [q,w,r,r_dot]
+
+%ode45 with state vector in other file
+
+function [q_dot, w_dot, r_dot, r_2dot] = state_dot(state)
+
+
+q_dot = 0.5*q*w   %rate of change of quaternion in terms of w_BF
+
+r_dot = r_dot
+
+r_2dot = (calc_force_torq_mag(1) + calc_force_torq_grav(1))/(Ms+Mt)   % calc_force... function gets force in inertial frame
+

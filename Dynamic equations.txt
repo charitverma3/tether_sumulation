@@ -9,6 +9,7 @@ Inertia_BF = [Ixx,-Ixy,-Ixz ; -Ixy, Iyy,-Iyz; -Ixz, -Iyz,Izz]
 Torq_total_BF = Torq_grav_sys_BF + Torq_mag_BF
 
 w_BF_dot=diff(w_BF)   % see how to diff wrt a variable   ?????
+
 w_rel_dot = dot(w_BF_dot*A,[1,0,0]) , dot(w_BF_dot*A,[0,1,0]), dot(w_BF_dot*A,[0,0,1])   ]       
 %differentiation of scalar part of omega in IF projected along BF
 
